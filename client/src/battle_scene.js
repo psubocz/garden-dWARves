@@ -67,7 +67,7 @@ BattleScene.prototype.drawBackground = function() {
 	this._surface_battle_bg.blit(this._font.render("B"), [this.width-200, this.height-60]);
 
 	// draw an example dwarf
-	this.dwarf = gamejs.image.load("./statics/images/dwarf.png");
+	this.dwarf = world.get_image("dwarf");
 	this._surface_battle_bg.blit(this.dwarf, [100, this.height-200]);
 	this._surface_battle_bg.blit(this.dwarf, [180, this.height-200]);
 	this._surface_battle_bg.blit(this.dwarf, [240, this.height-200]);

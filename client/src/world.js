@@ -21,7 +21,7 @@ var sprites = exports.OBJECT_SPRITES = {
 	"metal": {path: "./statics/images/metal.png"},
 	"wood": {path: "./statics/images/wood.png"},
 	"moss": {path: "./statics/images/moss.png"},
-	"dwarf": {path: "./statics/images/dwarf.png"}
+	"dwarf": {path: "./statics/images/dwarf.png", scale: 0.3}
 };
 
 exports.get_image = function(id) {
