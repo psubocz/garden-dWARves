@@ -1,16 +1,17 @@
 var gamejs = require("gamejs"), 
-	matrix = require("gamejs/utils/matrix"), 
-	font = require("gamejs/font"),
-	BulletSprite = require("bullet_sprite").Bullet;
+	matrix = require("gamejs/utils/matrix"),
+	world = require("world"),
+	font = require("gamejs/font");
+
 
 var BattleScene = exports.BattleScene = function(director) {
 	this.director = director;
 	this.width = 1600;
 	this.height = this.director.height;
 	
-//	this.zoom = 1.0;
-//	this.min_zoom = 0.5;
-//	this.max_zoom = 3.0;
+// this.zoom = 1.0;
+// this.min_zoom = 0.5;
+// this.max_zoom = 3.0;
 	
 	this._font = new font.Font('48px sans');
 
@@ -25,60 +26,54 @@ var BattleScene = exports.BattleScene = function(director) {
 
 	this._surface_battle = new gamejs.Surface(this.width, this.height);
 	this._surface_battle_bg = new gamejs.Surface(this.width, this.height);
-	this._bullets = [];
+	this._objects = [];
 
 	/* predraw the background */
-	
-	gamejs.draw.rect(this._surface_battle_bg, 
-		"#40ca40", 
-		new gamejs.Rect(0, this.height-100, this.width, 100)
-	);
-
-	gamejs.draw.rect(this._surface_battle_bg, 
-		"#8080da", 
-		new gamejs.Rect(0, 0, this.width, this.height-100)
-	);
-	
-	// draw the debug grid
-	for(var i=0.5; i < this.width; i += 200) {
-		gamejs.draw.line(this._surface_battle_bg,
-			"red", [i, 0], [i, this.height], 1);
-	};
-	
-	this._surface_battle_bg.blit(this._font.render("A"), [300, this.height-100]);
-	this._surface_battle_bg.blit(this._font.render("B"), [this.width-300, this.height-100]);
-
+	this.drawBackground();
 };
 
-/**
- * Scale up the rect by factor, so that it never is larger
- * then maxRect or smaller then minRect. This keeps the aspect ratio
- * of rect.
- * 
- * @param rect
- * @param maxRect
- * @param factor
- */
-function scaleRect(rect, factor, maxRect, minRect) {
-	var deltax = rect.width * factor;
+BattleScene.prototype.drawBackground = function() {
+	// load cloud images
+	this.cloudImgs = [];
+	for (var i=1; i <= 6; i++) {
+		this.cloudImgs.push(world.get_image("cloud_"+i));
+	};
 	
-	var sh = rect.height * factor;
-	var aspect  = rect.width / rect.height;
+	this.grassImg = world.get_image("grass");
+	this.groundLeft = world.get_image("ground-left");
+	this.groundRight = world.get_image("ground-right");
 	
-	console.log("B", factor, rect.toString(), "U", maxRect.toString(), "L", minRect.toString());
+	// draw sky
+	gamejs.draw.rect(this._surface_battle_bg,
+		"#babaf2",
+		new gamejs.Rect(0, 0, this.width, this.height)
+	);
 	
-	sh = Math.max(Math.min(sh, maxRect.height), minRect.height);
-	sw = sh * aspect;
-	var r = new gamejs.Rect(
-			rect.left * factor,
-			rect.top * factor,
-			rect.width * 
-			Math.max(rect.top - (sh + rect.height), 0),
-			sw, sh); 
-	console.log(r.toString(), factor, rect.toString(), "U", maxRect.toString(), "L", minRect.toString());
-	return r;
-}
+	// draw clouds
+	for (i=0; i < this.width/220; ++i) {
+		var x = Math.floor((Math.random()*10)+1) % 6;
+		this._surface_battle_bg.blit(this.cloudImgs[x],[220*i,10]);
+	}
+	
+	
+	// draw ground
+	this._surface_battle_bg.blit(this.groundLeft,[0, this.height-96]);
+	this._surface_battle_bg.blit(this.groundRight,[this.width-528, this.height-96]);
+	// draw grass
+	this._surface_battle_bg.blit(this.grassImg, [0, this.height-75]);
+	
+	// 
+	this._surface_battle_bg.blit(this._font.render("A"), [200, this.height-60]);
+	this._surface_battle_bg.blit(this._font.render("B"), [this.width-200, this.height-60]);
 
+	// draw an example dwarf
+	this.dwarf = world.get_image("dwarf");
+	this._surface_battle_bg.blit(this.dwarf, [100, this.height-200]);
+	this._surface_battle_bg.blit(this.dwarf, [180, this.height-200]);
+	this._surface_battle_bg.blit(this.dwarf, [240, this.height-200]);
+	
+
+}
 
 BattleScene.prototype.handleEvent = function handleEvent(event) {
 	if(this.locked)
@@ -95,21 +90,21 @@ BattleScene.prototype.handleEvent = function handleEvent(event) {
 				break;
 			this.scrollNowBy(event.rel[0], event.rel[1]);
 			break;
-//		case gamejs.event.MOUSE_WHEEL:
-//			var new_zoom = this.zoom * (1 - event.delta/100);
-//			this.zoom = Math.max(this.min_zoom, Math.min(this.max_zoom, new_zoom));
-//			this._zoomedport = scaleRect(this._viewport,
-//				this._boundingbox, 
-//				new gamejs.Rect(0, 0, this.director.width, this.director.height),
-//				this.zoom
-//			);
-//			break;
+// case gamejs.event.MOUSE_WHEEL:
+// var new_zoom = this.zoom * (1 - event.delta/100);
+// this.zoom = Math.max(this.min_zoom, Math.min(this.max_zoom, new_zoom));
+// this._zoomedport = scaleRect(this._viewport,
+// this._boundingbox,
+// new gamejs.Rect(0, 0, this.director.width, this.director.height),
+// this.zoom
+// );
+// break;
 	}
 };
 
 
 BattleScene.prototype.update = function(msDuration) {
-	this._bullets = this._bullets.filter(function(b) {
+	this._objects = this._objects.filter(function(b) {
 		return !b.update(msDuration);
 	}, this);
 };
@@ -117,7 +112,7 @@ BattleScene.prototype.update = function(msDuration) {
 
 BattleScene.prototype.draw = function(display) {
 	this._surface_battle.blit(this._surface_battle_bg);
-	this._bullets.forEach(function(b) {
+	this._objects.forEach(function(b) {
 		b.draw(this._surface_battle);
 	}, this);
 
@@ -154,8 +149,7 @@ BattleScene.prototype.scrollTo = function(x, y, duration) {
 		deltax = tx - this._viewport.left,
 		deltay = ty - this._viewport.top,  
 		total = 0, duration = duration || 1000;
-	
-	
+
 	var speedx = deltax / duration; // pixels per ms
 	var speedy = deltay / duration; // pixels per ms
 	
@@ -181,7 +175,6 @@ BattleScene.prototype.scrollTo = function(x, y, duration) {
 	gamejs.time.fpsCallback(scroller, this, 50);
 };
 
-
-BattleScene.prototype.animateShot = function(sx, sy, dx, dy) {
-	this._bullets.push(new BulletSprite(sx, sy, dx, dy));
+BattleScene.prototype.add = function(sprite) { 
+	this._objects.push(sprite);
 };

@@ -1,9 +1,11 @@
-var gamejs = require('gamejs'),
-	matrix = require('gamejs/utils/matrix'),
-	StartScene = require("intro_screen").StartScene, 
-	BattleScene = require("battle_scene").BattleScene;
+var gamejs = require('gamejs'), matrix = require('gamejs/utils/matrix'), world = require('world'), SplashScene = require("splash_scene").SplashScene, BattleScene = require("battle_scene").BattleScene, TracedSprite = require("traced_sprite").TracedSprite;
 
-gamejs.preload(["./statics/images/logo.png","./statics/images/cannonball.png" ]);
+var object_sprites = [];
+for ( var k in world.OBJECT_SPRITES) {
+	object_sprites.push(world.OBJECT_SPRITES[k].path);
+};
+
+gamejs.preload(object_sprites.concat(['./statics/images/startScreen.png']));
 
 gamejs.Surface.prototype.raw_blit = function(src, sx, sy, sw, sh, dx, dy, dw,
 		dh) {
@@ -20,7 +22,7 @@ gamejs.Surface.prototype.raw_blit = function(src, sx, sy, sw, sh, dx, dy, dw,
 };
 
 gamejs.ready(function() {
-	
+
 	function Director(width, height) {
 		this.width = width;
 		this.height = height;
@@ -68,30 +70,34 @@ gamejs.ready(function() {
 		return this.activeScene;
 	};
 
-	var director = new Director(1024, 550);
-	var battle_scene = new BattleScene(director);
+	var director = new Director(800, 600);
+	director.start(new SplashScene(director));
 	
-//	document.getElementById("start").onclick = function() {
-//		document.getElementById("gjs-canvas").style.display = "block";
-//		director.start(battle_scene);
-//	};
-	
-	director.start(battle_scene);
-
-	// display.blit(
-	// (new gamejs.font.Font('30px Sans-serif')).render('Hello World')
-	// );
-	
+	document.getElementById("start").onclick = function() {
+		this.style.display = "none";
+		battle_scene = new BattleScene(director);
+		director.start(battle_scene);
+	};
+/*	
 	document.getElementById("btnA").onclick = function() {
-		console.log("AAA");
 		battle_scene.scrollTo(300, 450);
 	};
-	
+
 	document.getElementById("btnB").onclick = function() {
 		battle_scene.scrollTo(1300, 450);
 	};
-	
+
 	document.getElementById("shot").onclick = function() {
-		battle_scene.animateShot(50, 200, 500, 200);
-	};
+		var trace = []; 
+		for(var i=0; i < 60; i++) {
+			trace.push({
+				stamp : i*30,
+				x : i*5,
+				y : 100+50*Math.sin(i/10),
+				rotation : i*3,
+				alpha: (i < 55 ? 0: Math.sin((i-55)/10*3.1415926535))
+			});
+		}
+		battle_scene.add(new TracedSprite("cannonball", trace));
+	}; */
 });

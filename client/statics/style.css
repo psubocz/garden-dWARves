@@ -1,10 +1,6 @@
 body {
-	background: black;
-}
-
-#container {
-	width: 1000px;
-	margin: 10px auto;
+	background-color: black;
+	color: silver;
 }
 
 #logo {
@@ -15,8 +11,46 @@ body {
 	max-height: 80px;
 }
 
-#gjs-canvas {
-	background-color: #f6f6f6;
-	border: 1px solid #dedede;
-	margin: 6px auto;
+#container {
+	border: 2px solid silver;
+	text-align: center;
+	margin: 35px;
+	position: relative;
+	overflow: hidden;
+	min-width: 800px;
+	min-height: 600px;
+	width: 800px;
+	
 }
+
+#gjs-canvas {
+	display: block;
+	position: absolute;
+	background-color: black;
+	width: 800px;
+	height: 600px;
+}
+
+button#start {
+	font-family: serif;
+	font-variant: small-caps;
+	position: absolute;
+	z-index: 10;
+	top: 45%;
+	left: 50%;
+	width: 200px;
+	height: 64px;
+	font-size: 48px;
+	margin-left: -100px;
+	background: rgb(105, 166, 199);
+	border: 1px solid black;
+	color: white;
+	border-radius: 6px;
+	box-shadow: 3px 3px 5px black;
+	
+}
+
+button#start:hover {
+	background-color: rgb(129, 168, 34);
+}
+	
