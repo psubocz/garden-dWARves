@@ -12,9 +12,17 @@ import config
 def handle_socketio(rest):
 	socketio_manage(request.environ, {'': ActorProxy})
 
-@route('/static/<path>')
+@route('/statics/<path:path>')
 def handle_static(path):
-	return static_file(path, root='clitest')
+	return static_file(path, root='../client/statics')
+
+@route('/src/<path:path>')
+def handle_src(path):
+	return static_file(path, root='../client/src')
+
+@route('/')
+def handle_index():
+	return static_file('index.html', root='../client/statics')
 
 print "Starting socket.io server at %s:%d" % (config.SOCKETIO_IFACE, config.SOCKETIO_PORT)
 SocketIOServer((config.SOCKETIO_IFACE, config.SOCKETIO_PORT), bottle.default_app(), namespace="socket.io").serve_forever()
