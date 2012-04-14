@@ -1,4 +1,4 @@
-var gamejs = require("gamejs");
+var gamejs = require("gamejs"), transform = require("gamejs/transform");
 
 var sprites = exports.OBJECT_SPRITES = {
 	"cannonball": {

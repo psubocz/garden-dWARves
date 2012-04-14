@@ -30,11 +30,6 @@ var BattleScene = exports.BattleScene = function(director) {
 
 	/* predraw the background */
 	this.drawBackground();
-	
-	gamejs.draw.rect(this._surface_battle_bg, 
-		"#40ca40", 
-		new gamejs.Rect(0, this.height-100, this.width, 100)
-	);
 };
 
 BattleScene.prototype.drawBackground = function() {
@@ -64,8 +59,12 @@ BattleScene.prototype.drawBackground = function() {
 	// draw ground
 	this._surface_battle_bg.blit(this.groundLeft,[0, this.height-96]);
 	this._surface_battle_bg.blit(this.groundRight,[this.width-528, this.height-96]);
-	this._surface_battle_bg.blit(this._font.render("A"), [300, this.height-100]);
-	this._surface_battle_bg.blit(this._font.render("B"), [this.width-300, this.height-100]);
+	// draw grass
+	this._surface_battle_bg.blit(this.grassImg, [0, this.height-75]);
+	
+	// 
+	this._surface_battle_bg.blit(this._font.render("A"), [200, this.height-60]);
+	this._surface_battle_bg.blit(this._font.render("B"), [this.width-200, this.height-60]);
 
 	// draw an example dwarf
 	this.dwarf = gamejs.image.load("./statics/images/dwarf.png");
@@ -73,8 +72,7 @@ BattleScene.prototype.drawBackground = function() {
 	this._surface_battle_bg.blit(this.dwarf, [180, this.height-200]);
 	this._surface_battle_bg.blit(this.dwarf, [240, this.height-200]);
 	
-	// draw grass
-	this._surface_battle_bg.blit(this.grassImg, [0, this.height-75]);
+
 }
 
 BattleScene.prototype.handleEvent = function handleEvent(event) {
