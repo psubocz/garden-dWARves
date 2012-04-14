@@ -1,0 +1,22 @@
+body {
+	background: black;
+}
+
+#container {
+	width: 1000px;
+	margin: 10px auto;
+}
+
+#logo {
+	text-align: center;
+}
+
+#logo img {
+	max-height: 80px;
+}
+
+#gjs-canvas {
+	background-color: #f6f6f6;
+	border: 1px solid #dedede;
+	margin: 6px auto;
+}
