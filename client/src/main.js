@@ -67,7 +67,7 @@ gamejs.ready(function() {
 		return this.activeScene;
 	};
 
-	var director = new Director(1000, 550);
+	var director = new Director(1024, 550);
 	director.start(new BattleScene(director));
 
 	// display.blit(
