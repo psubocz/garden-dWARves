@@ -1,4 +1,7 @@
-var gamejs = require("gamejs"), matrix = require("gamejs/utils/matrix"), font = require("gamejs/font");
+var gamejs = require("gamejs"), 
+	matrix = require("gamejs/utils/matrix"), 
+	font = require("gamejs/font"),
+	BulletSprite = require("bullet_sprite").Bullet;
 
 var BattleScene = exports.BattleScene = function(director) {
 	this.director = director;
@@ -22,6 +25,7 @@ var BattleScene = exports.BattleScene = function(director) {
 
 	this._surface_battle = new gamejs.Surface(this.width, this.height);
 	this._surface_battle_bg = new gamejs.Surface(this.width, this.height);
+	this._bullets = [];
 
 	/* predraw the background */
 	
@@ -104,9 +108,19 @@ BattleScene.prototype.handleEvent = function handleEvent(event) {
 };
 
 
+BattleScene.prototype.update = function(msDuration) {
+	this._bullets = this._bullets.filter(function(b) {
+		return !b.update(msDuration);
+	}, this);
+};
+
+
 BattleScene.prototype.draw = function(display) {
 	this._surface_battle.blit(this._surface_battle_bg);
-	display.clear();
+	this._bullets.forEach(function(b) {
+		b.draw(this._surface_battle);
+	}, this);
+
 	var vp = this._viewport;
 	display.raw_blit(this._surface_battle, 
 		vp.left, vp.top, vp.width, vp.height,
@@ -157,12 +171,17 @@ BattleScene.prototype.scrollTo = function(x, y, duration) {
 		if(total > duration) {
 			this._viewport.left = tx;
 			this._viewport.top = ty;
-			gamejs.time.deleteCallback(scroller, 30);
+			gamejs.time.deleteCallback(scroller, 50);
 			this.locked = false;
 			return;
 		} 
 		this.scrollNowBy(msElapsed * speedx, msElapsed * speedy);
 	}
 
-	gamejs.time.fpsCallback(scroller, this, 30);
+	gamejs.time.fpsCallback(scroller, this, 50);
+};
+
+
+BattleScene.prototype.animateShot = function(sx, sy, dx, dy) {
+	this._bullets.push(new BulletSprite(sx, sy, dx, dy));
 };
