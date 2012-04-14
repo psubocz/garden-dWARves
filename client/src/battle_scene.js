@@ -12,6 +12,7 @@ var BattleScene = exports.BattleScene = function(director) {
 	this._font = new font.Font('48px sans');
 
 	this.scrolling = false;
+	this._locked = false;
 
 	this._boundingbox = new gamejs.Rect(0, 0, this.width, this.height);
 	this._viewport = new gamejs.Rect(
@@ -76,6 +77,8 @@ function scaleRect(rect, factor, maxRect, minRect) {
 
 
 BattleScene.prototype.handleEvent = function handleEvent(event) {
+	if(this.locked)
+		return;
 	switch(event.type) {
 		case gamejs.event.MOUSE_DOWN:
 			this.scrolling = true;
@@ -86,17 +89,7 @@ BattleScene.prototype.handleEvent = function handleEvent(event) {
 		case gamejs.event.MOUSE_MOTION:
 			if(!this.scrolling)
 				break;
-			this._viewport.left += event.rel[0];
-			this._viewport.left = Math.min(
-				this._boundingbox.width - this._viewport.width, 
-				Math.max(this._viewport.left, 0)
-			);
-
-			this._viewport.top += event.rel[1];
-			this._viewport.top = Math.min(
-				this._boundingbox.height - this._viewport.height, 
-				Math.max(this._viewport.top, 0)
-			);
+			this.scrollNowBy(event.rel[0], event.rel[1]);
 			break;
 //		case gamejs.event.MOUSE_WHEEL:
 //			var new_zoom = this.zoom * (1 - event.delta/100);
@@ -110,6 +103,7 @@ BattleScene.prototype.handleEvent = function handleEvent(event) {
 	}
 };
 
+
 BattleScene.prototype.draw = function(display) {
 	this._surface_battle.blit(this._surface_battle_bg);
 	display.clear();
@@ -117,4 +111,58 @@ BattleScene.prototype.draw = function(display) {
 	display.raw_blit(this._surface_battle, 
 		vp.left, vp.top, vp.width, vp.height,
 		0, 0, this.director.width, this.director.height);
+};
+
+
+BattleScene.prototype.sanitizeX = function(x) {
+	return Math.min(Math.max(0, x), this._boundingbox.width - this._viewport.width);
+};
+
+BattleScene.prototype.sanitizeY = function(y) {
+	return Math.min(Math.max(0, y), this._boundingbox.height - this._viewport.height);
+};
+
+BattleScene.prototype.scrollNowBy = function(x, y) {
+	this._viewport.left += x || 0;
+	this._viewport.left = this.sanitizeX(this._viewport.left);
+	
+	this._viewport.top += y || 0;
+	this._viewport.top = this.sanitizeY(this._viewport.top);
+};
+
+
+BattleScene.prototype.scrollTo = function(x, y, duration) {
+	if(this.locked)
+		return;
+	/* Animate scrolling to point (x, y) [as the center of the screen]. */
+	var tx = this.sanitizeX(x - this._viewport.width/2),
+		ty = this.sanitizeY(y - this._viewport.height/2),
+		deltax = tx - this._viewport.left,
+		deltay = ty - this._viewport.top,  
+		total = 0, duration = duration || 1000;
+	
+	
+	var speedx = deltax / duration; // pixels per ms
+	var speedy = deltay / duration; // pixels per ms
+	
+	if(speedx < 1 && !speedy < 1) {
+		duration = 0;
+	}
+	
+	this.locked = true;
+
+	function scroller(msElapsed) {
+		total += msElapsed;
+		
+		if(total > duration) {
+			this._viewport.left = tx;
+			this._viewport.top = ty;
+			gamejs.time.deleteCallback(scroller, 30);
+			this.locked = false;
+			return;
+		} 
+		this.scrollNowBy(msElapsed * speedx, msElapsed * speedy);
+	}
+
+	gamejs.time.fpsCallback(scroller, this, 30);
 };

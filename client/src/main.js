@@ -68,11 +68,21 @@ gamejs.ready(function() {
 	};
 
 	var director = new Director(1024, 550);
-	director.start(new BattleScene(director));
+	var battle_scene = new BattleScene(director); 
+	director.start(battle_scene);
 
 	// display.blit(
 	// (new gamejs.font.Font('30px Sans-serif')).render('Hello World')
 	// );
+	
+	document.getElementById("btnA").onclick = function() {
+		console.log("AAA");
+		battle_scene.scrollTo(300, 450);
+	};
+	
+	document.getElementById("btnB").onclick = function() {
+		battle_scene.scrollTo(1300, 450);
+	};
 
 	/**
 	 * function tick(msDuration) { // game loop return; };
