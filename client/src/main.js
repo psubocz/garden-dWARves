@@ -75,7 +75,7 @@ gamejs.ready(function() {
 	
 	document.getElementById("start").onclick = function() {
 		this.style.display = "none";
-		battle_scene = new BattleScene(director);
+		battle_scene = new BattleScene(director, {name: "Zuber"}, {name: "Ślimak"});
 		director.start(battle_scene);
 	};
 /*	

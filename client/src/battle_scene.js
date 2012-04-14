@@ -1,10 +1,11 @@
 var gamejs = require("gamejs"), 
 	matrix = require("gamejs/utils/matrix"),
 	world = require("world"),
-	font = require("gamejs/font");
+	font = require("gamejs/font"),
+	Castle = require("elements/castle").Castle;
 
 
-var BattleScene = exports.BattleScene = function(director) {
+var BattleScene = exports.BattleScene = function(director, playerA, playerB) {
 	this.director = director;
 	this.width = 1600;
 	this.height = this.director.height;
@@ -30,6 +31,13 @@ var BattleScene = exports.BattleScene = function(director) {
 
 	/* predraw the background */
 	this.drawBackground();
+	
+	
+	this.playerA = playerA;
+	this.playerB = playerB;
+	
+	this.add(new Castle(director, playerA.name, new gamejs.Rect(150, 270, 250, 300)));
+	this.add(new Castle(director, playerB.name, new gamejs.Rect(1150, 270, 250, 300)));
 };
 
 BattleScene.prototype.drawBackground = function() {
@@ -59,20 +67,9 @@ BattleScene.prototype.drawBackground = function() {
 	// draw ground
 	this._surface_battle_bg.blit(this.groundLeft,[0, this.height-96]);
 	this._surface_battle_bg.blit(this.groundRight,[this.width-528, this.height-96]);
+	
 	// draw grass
 	this._surface_battle_bg.blit(this.grassImg, [0, this.height-75]);
-	
-	// 
-	this._surface_battle_bg.blit(this._font.render("A"), [200, this.height-60]);
-	this._surface_battle_bg.blit(this._font.render("B"), [this.width-200, this.height-60]);
-
-	// draw an example dwarf
-	this.dwarf = world.get_image("dwarf");
-	this._surface_battle_bg.blit(this.dwarf, [100, this.height-200]);
-	this._surface_battle_bg.blit(this.dwarf, [180, this.height-200]);
-	this._surface_battle_bg.blit(this.dwarf, [240, this.height-200]);
-	
-
 }
 
 BattleScene.prototype.handleEvent = function handleEvent(event) {
