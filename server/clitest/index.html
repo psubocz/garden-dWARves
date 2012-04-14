@@ -1,0 +1,32 @@
+<html>
+<head>
+<script src="/statics/socket.io.min.js"></script>
+<script>
+  var socket = io.connect('http://127.0.0.1:8000');
+  function do_connect(nick) {
+  	socket.emit('connect', {'nick': nick});
+  }
+  function say(txt) {
+    socket.emit('say', txt);
+  }
+  socket.on('connected', function () {
+	console.log('connected to server');
+	socket.emit('search_for_opponent', {});
+  });
+  socket.on('waiting_for_opponent', function() {
+    console.log('waiting for opponent');
+  });
+  socket.on('opponent_joined', function(udata) {
+    console.log('opponent joined: ' + udata['nick']);
+  });
+  socket.on('game_ready', function() {
+	console.log('game ready');
+  });
+  socket.on('chat', function(udata, txt) {
+	console.log(udata['nick']+':'+txt);
+  });
+
+</script>
+</head>
+
+</html>
