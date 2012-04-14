@@ -1,7 +1,7 @@
 var gamejs = require("gamejs"), 
 	matrix = require("gamejs/utils/matrix"), 
-	font = require("gamejs/font"),
-	BulletSprite = require("bullet_sprite").Bullet;
+	font = require("gamejs/font");
+
 
 var BattleScene = exports.BattleScene = function(director) {
 	this.director = director;
@@ -25,7 +25,7 @@ var BattleScene = exports.BattleScene = function(director) {
 
 	this._surface_battle = new gamejs.Surface(this.width, this.height);
 	this._surface_battle_bg = new gamejs.Surface(this.width, this.height);
-	this._bullets = [];
+	this._objects = [];
 
 	/* predraw the background */
 	
@@ -109,7 +109,7 @@ BattleScene.prototype.handleEvent = function handleEvent(event) {
 
 
 BattleScene.prototype.update = function(msDuration) {
-	this._bullets = this._bullets.filter(function(b) {
+	this._objects = this._objects.filter(function(b) {
 		return !b.update(msDuration);
 	}, this);
 };
@@ -117,7 +117,7 @@ BattleScene.prototype.update = function(msDuration) {
 
 BattleScene.prototype.draw = function(display) {
 	this._surface_battle.blit(this._surface_battle_bg);
-	this._bullets.forEach(function(b) {
+	this._objects.forEach(function(b) {
 		b.draw(this._surface_battle);
 	}, this);
 
@@ -181,7 +181,6 @@ BattleScene.prototype.scrollTo = function(x, y, duration) {
 	gamejs.time.fpsCallback(scroller, this, 50);
 };
 
-
-BattleScene.prototype.animateShot = function(sx, sy, dx, dy) {
-	this._bullets.push(new BulletSprite(sx, sy, dx, dy));
+BattleScene.prototype.add = function(sprite) { 
+	this._objects.push(sprite);
 };
