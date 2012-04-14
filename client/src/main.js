@@ -4,7 +4,7 @@ var gamejs = require('gamejs');
 
 gamejs.ready(function() {
 
-    var display = gamejs.display.setMode([600, 400]);
+    var display = gamejs.display.setMode([1000, 550]);
     display.blit(
         (new gamejs.font.Font('30px Sans-serif')).render('Hello World')
     );
