@@ -5,9 +5,7 @@ var sprites = exports.OBJECT_SPRITES = {
 		path: "./statics/images/cannonball.png",
 		scale: 0.5
 	},
-	"cloud_1": {
-		path: "./statics/images/cloud_1.png",
-	},
+	"cloud_1": {path: "./statics/images/cloud_1.png"},
 	"cloud_2": {path: "./statics/images/cloud_2.png"},
 	"cloud_3": {path: "./statics/images/cloud_3.png"},
 	"cloud_4": {path: "./statics/images/cloud_4.png"},
@@ -21,7 +19,7 @@ var sprites = exports.OBJECT_SPRITES = {
 	"metal": {path: "./statics/images/metal.png"},
 	"wood": {path: "./statics/images/wood.png"},
 	"moss": {path: "./statics/images/moss.png"},
-	"dwarf": {path: "./statics/images/dwarf.png", scale: 0.3}
+	"dwarf": {path: "./statics/images/dwarf.png", scale: 0.3},
 };
 
 exports.get_image = function(id) {
