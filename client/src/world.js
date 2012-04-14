@@ -1,9 +1,11 @@
-exports.OBJECT_SPRITES = {
+var gamejs = require("gamejs");
+
+var sprites = exports.OBJECT_SPRITES = {
 	"cannonball": {
 		path: "./statics/images/cannonball.png",
 		scale: 0.5
 	},
-	"cloud1": {
+	"cloud_1": {
 		path: "./statics/images/cloud_1.png",
 	},
 	"cloud_2": {path: "./statics/images/cloud_2.png"},
@@ -20,4 +22,13 @@ exports.OBJECT_SPRITES = {
 	"wood": {path: "./statics/images/wood.png"},
 	"moss": {path: "./statics/images/moss.png"},
 	"dwarf": {path: "./statics/images/dwarf.png"}
+};
+
+exports.get_image = function(id) {
+	var obj = sprites[id];
+	if(!obj) 
+		throw Error("No sprite for id: " + id);
+	var img = gamejs.image.load(obj.path), sizes = img.getSize();
+	return sprites[id].scale !== undefined ? 
+		transform.scale(img, [sizes[0]*obj.scale, sizes[1]*obj.scale]) : img;
 };

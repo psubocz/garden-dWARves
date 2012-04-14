@@ -10,13 +10,13 @@ var gamejs = require("gamejs"),
 var TracedSprite = exports.TracedSprite = function TracedSprite(obj_id, trace) {
 	TracedSprite.superConstructor.apply(this, arguments);
 	
-	var obj = this.obj = game_world.OBJECT_SPRITES[obj_id];
+	this.obj = game_world.OBJECT_SPRITES[obj_id];
+	this._src_image = game_world.get_image(obj_id);
+
 	this.trace = trace;
 	this._lastframe = 0;
 	this._totaltime = 0;
-	this._src_image = gamejs.image.load(obj.path);
-	var sizes = this._src_image.getSize();
-	this._src_image = transform.scale(this._src_image, [sizes[0]*obj.scale, sizes[1]*obj.scale]);
+
 	this.render_frame(trace[0]);
 };
 

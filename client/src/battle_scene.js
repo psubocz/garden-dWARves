@@ -41,7 +41,7 @@ BattleScene.prototype.drawBackground = function() {
 	// load cloud images
 	this.cloudImgs = [];
 	for (var i=1; i <= 6; i++) {
-		this.clousImgs.push(world.get_image("cloud_"+i));
+		this.cloudImgs.push(world.get_image("cloud_"+i));
 	};
 	
 	this.grassImg = world.get_image("grass");
