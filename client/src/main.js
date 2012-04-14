@@ -20,6 +20,7 @@ gamejs.Surface.prototype.raw_blit = function(src, sx, sy, sw, sh, dx, dy, dw,
 };
 
 gamejs.ready(function() {
+	
 	function Director(width, height) {
 		this.width = width;
 		this.height = height;
@@ -68,8 +69,12 @@ gamejs.ready(function() {
 	};
 
 	var director = new Director(1024, 550);
-	var battle_scene = new BattleScene(director); 
-	director.start(battle_scene);
+	var battle_scene = new BattleScene(director);
+	
+	document.getElementById("start").onclick = function() {
+		document.getElementById("gjs-canvas").style.display = "block";
+		director.start(battle_scene);
+	};
 
 	// display.blit(
 	// (new gamejs.font.Font('30px Sans-serif')).render('Hello World')
