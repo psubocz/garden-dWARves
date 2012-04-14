@@ -1,0 +1,3 @@
+[submodule "libs/gamejs"]
+	path = libs/gamejs
+	url = git://github.com/oberhamsi/gamejs.git
