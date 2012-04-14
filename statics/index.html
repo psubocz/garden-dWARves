@@ -1,7 +1,33 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	   <title>Garden DWARves</title>
+		<meta charset="utf-8">
+		<title>garden dWARves</title>
+		<link media="screen" type="text/css" rel="stylesheet" href="style.css">
+		<script type="text/javascript">
+			window.onload = function() {
+				var canvas = document.getElementById('gameCanvas');
+				var context = canvas.getContext('2d');
+				
+				/*
+				context.fillStyle = '#cc0000';
+				context.fillRect(30, 30, 100, 100);
+				*/
+				
+				context.moveTo(0, 500);
+				context.lineTo(1000, 500);
+				context.stroke();
+			};
+		</script>
 	</head>
-	<body></body>
+	<body>
+		<div id="container">
+			<div id="logo">
+				Garder dWARves LOGO
+			</div>
+			<div id="canvasContainer">
+				<canvas id="gameCanvas" width="1000" height="550">Your browser doesn't support HTML5 canvas</canvas>
+			</div>
+		</div>
+	</body>
 </html>
