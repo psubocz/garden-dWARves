@@ -14,9 +14,7 @@
 	margin: 0 auto;
 }
 
-#canvasContainer {
-	width: 1000px;
-	height: 550px;
+#gjs-canvas {
 	background-color: #f6f6f6;
 	border: 1px solid #dedede;
 }
