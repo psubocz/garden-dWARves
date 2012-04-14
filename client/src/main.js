@@ -1,11 +1,11 @@
-var gamejs = require('gamejs'), matrix = require('gamejs/utils/matrix'), world = require('world'), StartScene = require("intro_screen").StartScene, BattleScene = require("battle_scene").BattleScene, TracedSprite = require("traced_sprite").TracedSprite;
+var gamejs = require('gamejs'), matrix = require('gamejs/utils/matrix'), world = require('world'), SplashScene = require("splash_scene").SplashScene, BattleScene = require("battle_scene").BattleScene, TracedSprite = require("traced_sprite").TracedSprite;
 
 var object_sprites = [];
 for ( var k in world.OBJECT_SPRITES) {
 	object_sprites.push(world.OBJECT_SPRITES[k].path);
 };
 
-gamejs.preload(object_sprites.concat([]));
+gamejs.preload(object_sprites.concat(['./statics/images/startScreen.png']));
 
 gamejs.Surface.prototype.raw_blit = function(src, sx, sy, sw, sh, dx, dy, dw,
 		dh) {
@@ -70,20 +70,15 @@ gamejs.ready(function() {
 		return this.activeScene;
 	};
 
-	var director = new Director(1024, 550);
-	var battle_scene = new BattleScene(director);
-
-	// document.getElementById("start").onclick = function() {
-	// document.getElementById("gjs-canvas").style.display = "block";
-	// director.start(battle_scene);
-	// };
-
-	director.start(battle_scene);
-
-	// display.blit(
-	// (new gamejs.font.Font('30px Sans-serif')).render('Hello World')
-	// );
-
+	var director = new Director(800, 600);
+	director.start(new SplashScene(director));
+	
+	document.getElementById("start").onclick = function() {
+		this.style.display = "none";
+		battle_scene = new BattleScene(director);
+		director.start(battle_scene);
+	};
+/*	
 	document.getElementById("btnA").onclick = function() {
 		battle_scene.scrollTo(300, 450);
 	};
@@ -104,5 +99,5 @@ gamejs.ready(function() {
 			});
 		}
 		battle_scene.add(new TracedSprite("cannonball", trace));
-	};
+	}; */
 });
