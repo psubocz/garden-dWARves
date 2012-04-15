@@ -1,5 +1,6 @@
 from gevent.queue import Queue
 import gevent
+from physics import RealArena
 
 class Arena(object):
 
@@ -19,6 +20,8 @@ class Arena(object):
 
 		if len(self._actors) >= 2:
 			self._send_all('game_ready')
+			self._real_arena = RealArena()
+			self._send_all('arena_layout', (self._real_arena.get_all_objects(),))
 
 	def on_chat(self, actor, txt):
 		self._send_all('chat', (actor, txt))

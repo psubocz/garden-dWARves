@@ -80,6 +80,9 @@ class Actor(object):
 	def on_game_ready(self):
 		self.emit('game_ready')
 
+	def on_arena_layout(self, layout):
+		self.emit('arena_layout', layout)
+
 	def on_start_game(self):
 		self._change_state(INGAME)
 		self.emit('game_started')
