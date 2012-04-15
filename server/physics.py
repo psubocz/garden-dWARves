@@ -64,10 +64,10 @@ class RealArena(object):
 if __name__ == "__main__":
 
 	arena = RealArena()
-	#while True:
-	#	r = arena.tick()
-	#	if r == []:
-	#		break
-	#	print r
-	print arena.get_all_objects()
+	while True:
+		r = arena.tick()
+		if r == []:
+			break
+		print r
+	#print arena.get_all_objects()
 

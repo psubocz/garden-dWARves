@@ -7,6 +7,7 @@ class Arena(object):
 	def __init__(self):
 		self.inbox = Queue(0)
 		self._actors = []
+		self._turn = None
 
 	def run(self):
 		for event, args in self.inbox:
@@ -22,9 +23,43 @@ class Arena(object):
 			self._send_all('game_ready')
 			self._real_arena = RealArena()
 			self._send_all('arena_layout', (self._real_arena.get_all_objects(),))
+			self._change_turn()
 
 	def on_chat(self, actor, txt):
 		self._send_all('chat', (actor, txt))
+
+	def on_shot(self, actor, force, angle):
+		if actor != self._turn:
+			return
+
+		# physics!
+		self._update_physics()
+		self._change_turn()
+
+	def _update_physics(self):
+		result = []
+		time = 0
+		i = 0
+		while True:
+			r = self._real_arena.tick()
+			if r == []:
+				break
+			result.append({'time': time, 'objects': r})
+			time = time + 1.0/60
+			i = i + 1
+			if i % 60 == 0:
+				gevent.sleep(0)
+
+		self._send_all('arena_update', (result,))
+
+	def _change_turn(self):
+		if self._turn == self._actors[0]:
+			self._turn = self._actors[1]
+			self._send(self._actors[0], 'turn_change', (False,))
+		else:
+			self._turn = self._actors[0]
+			self._send(self._actors[1], 'turn_change', (False,))
+		self._send(self._turn, 'turn_change', (True,))
 
 	def _send(self, actor, event, args=()):
 		actor.inbox.put((event, args))
