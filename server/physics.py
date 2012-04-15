@@ -9,15 +9,16 @@ class RealArena(object):
 		doSleep = True
 		self._world = b2World(gravity=gravity, doSleep=doSleep)
 
-		groundBody = self._world.CreateStaticBody( position=(0,0), shapes=b2PolygonShape(box=(100, 0.36)))
+		groundBody = self._world.CreateStaticBody( position=(0,0), 
+										shapes=b2PolygonShape(box=(100, 1.4)))
 
 		self._put_object(1, 1, 5.0, 1.5)
 		self._put_object(2, 1, 8.0, 1.5)
-		self._put_object(3, 2, 5.0, 5)
+		self._put_object(3, 2, 5.0, 5.2)
 
 		self._put_object(4, 1, 41.0, 1.5)
 		self._put_object(5, 1, 44.0, 1.5)
-		self._put_object(6, 2, 41.0, 5)
+		self._put_object(6, 2, 41.0, 5.2)
 
 		self._timeStep = 1.0 / 60
 		self._vel_iters = 10

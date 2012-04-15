@@ -20,6 +20,9 @@ var Fork = exports.Fork = function Fork(director, flip) {
 	this.being_pulled = false;
 	this.flipped = !!flip;
 	this.angle = 0;
+	this.has_meatloaf = false;
+	
+	// this._boink_sample = new gamejs.mixer.Sound("./statics/boink.wav");
 };
 
 gamejs.utils.objects.extend(Fork, sprite.Sprite);
@@ -28,7 +31,9 @@ Fork.prototype.draw = function(canvas) {
 	var ctx = canvas.context;
 	this.image.clear();
 	this.image.blit(this._fork_image);
-	this.image.blit(this._bullet_image);
+	if(this.has_meatloaf) {
+		this.image.blit(this._bullet_image);
+	}
 	if(this.flipped) {
 		this.image = transform.flip(this.image, true, false);
 	}
@@ -49,6 +54,8 @@ Fork.prototype.start_sling = function(event) {
 Fork.prototype.stop_sling = function(event) {
 	this.director.send_shot(Math.abs(5 * this.angle / Math.PI));
 	this.angle = 0;
+	this.has_meatloaf = false;
+	// this._boink_sample.play();
 };
 
 Fork.prototype.sling_moved = function(event) {

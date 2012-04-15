@@ -10,8 +10,12 @@ for ( var k in world.OBJECT_SPRITES) {
 	object_sprites.push(world.OBJECT_SPRITES[k].path);
 };
 
-gamejs.preload(object_sprites.concat(['./statics/images/startScreen.png']));
-
+gamejs.preload(object_sprites.concat([
+    './statics/images/startScreen.png',
+]));
+/*
+gamejs.mixer.preload({"boink.wav": './statics/boink.wav'});
+*/
 gamejs.Surface.prototype.raw_blit = function(src, sx, sy, sw, sh, dx, dy, dw, dh) {
 	this.context.save();
 	this.context.globalCompositeOperation = "source-over";
@@ -84,7 +88,7 @@ gamejs.ready(function() {
 	};
 	
 	Director.prototype.send_shot = function(power) {
-		socket.emit("shot", {"power": power, "angle": 45});
+		socket.emit("shot", power, 0);
 	};
 
 	var director = new Director(1024, 600);
@@ -188,64 +192,62 @@ gamejs.ready(function() {
 		isGameOn = true;
 	});
 	
-	socket.on('turn_change', function(udata) {
-		battle_scene.setActivePlayer(udata.mine);
+	socket.on('turn_changed', function(udata) {
+		battle_scene.setActivePlayer(udata);
 	});
 	
+	var PPM = 36;
 	
-	
+	function create_trace_object(item) {
+		var sprite = item.type == 3 ? "cannonball" : "wood";
+		var orientation = (item.type == 2);
+		return new TracedSprite(
+				item.id, 
+				sprite,
+				[{
+					stamp: 0, 
+					rotation: item.angle * 180 / Math.PI,
+					x: item.x * PPM,
+					y: director.height - item.y * PPM
+				}], 
+				orientation
+		);
+	}
+
 	socket.on('arena_layout', function(udata) {
 		var item;
-		var ppm = 36;
-		
 		for(var i=0; i < udata.length; i++) {
 			item = udata[i];
-			battle_scene.add(
-				new TracedSprite(
-					item.id, 
-					"wood",
-					[{
-						stamp: 0, 
-						rotation: item.angle,
-						x: item.x * ppm,
-						y: director.height - item.y * ppm
-					}], 
-					item.type
-				)
-			);
+			battle_scene.add(create_trace_object(item));
 		}
 	});
-	
-	/*
-	document.getElementById("start").onclick = function() {
-		this.style.display = "none";
-		battle_scene = new BattleScene(director, {name: "Zuber"}, {name: "Ślimak"});
-		director.start(battle_scene);
-	};
-	*/
 
-	/*	
-	document.getElementById("btnA").onclick = function() {
-		battle_scene.scrollTo(300, 450);
-	};
+	socket.on('arena_update', function(udata) {
+		var traces = {};
+		var i, j, batch, trace, obj;
 
-	document.getElementById("btnB").onclick = function() {
-		battle_scene.scrollTo(1300, 450);
-	};
-
-	document.getElementById("shot").onclick = function() {
-		var trace = []; 
-		for(var i=0; i < 60; i++) {
-			trace.push({
-				stamp : i*30,
-				x : i*5,
-				y : 100+50*Math.sin(i/10),
-				rotation : i*3,
-				alpha: (i < 55 ? 0: Math.sin((i-55)/10*3.1415926535))
-			});
+		function add_trace(stamp, data) {
+			var l = traces[data.id] || [];
+			if(!(data.id in TracedSprite._objects)) {
+				create_trace_object(data);
+			}
+			l.push({stamp: stamp, rotation: data.angle * 180 / Math.PI,
+				x: data.x * PPM, y: director.height - data.y * PPM});
+			traces[data.id] = l;
 		}
-		battle_scene.add(new TracedSprite("cannonball", trace));
-	};
-	*/
+
+		for(i=0; i < udata.length; i++) {
+			batch = udata[i];
+			for(j=0; j < batch.objects.length; j++) {
+				add_trace(batch.time * 1000, batch.objects[j]);
+			}
+		}
+
+		for(i in traces) {
+			trace = traces[i];
+			obj = TracedSprite._objects[i];
+			obj.reset_trace(trace);
+		}
+	});
 	
 });

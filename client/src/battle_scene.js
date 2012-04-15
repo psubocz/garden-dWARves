@@ -132,17 +132,9 @@ BattleScene.prototype.draw = function(display) {
 		0, 0, this.director.width, this.director.height);
 	
 	if(this.active_player !== null) {
-		var ctx = display.context;
-		ctx.save();
-		ctx.font = "20pt Arial";
-		ctx.color = "white";
 		var text = (this.active_player === this.playerA ? 
 				"It's your turn" : "Player " + this.active_player.name + " is moving");
-		var metric = ctx.measure(text)
-		ctx.translate(this._viewport.left, this._viewport.top);
-		ctx.translate(this._viewport.width - metric.width/2, 20);
-		ctx.fillText(text, 0, 0, this._viewport.width);
-		ctx.restore();
+		$("#status").html(text);
 	}
 };
 
@@ -207,3 +199,10 @@ BattleScene.prototype.add = function(sprite) {
 };
 
 
+BattleScene.prototype.setActivePlayer = function(me) {
+	this.active_player = me ? this.playerA : this.playerB;
+	this.locked = !me;
+	if(me) {
+		this.fork.has_meatloaf = true;
+	}
+};
