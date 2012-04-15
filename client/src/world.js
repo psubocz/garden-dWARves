@@ -3,7 +3,7 @@ var gamejs = require("gamejs"), transform = require("gamejs/transform");
 var sprites = exports.OBJECT_SPRITES = {
 	"cannonball": {
 		path: "./statics/images/cannonball.png",
-		scale: 0.5
+		scale: 0.35
 	},
 	"cloud_1": {
 		path: "./statics/images/cloud_1.png",
@@ -21,13 +21,15 @@ var sprites = exports.OBJECT_SPRITES = {
 	"metal": {path: "./statics/images/metal.png"},
 	"wood": {path: "./statics/images/wood.png"},
 	"moss": {path: "./statics/images/moss.png"},
-	"dwarf": {path: "./statics/images/dwarf.png", scale: 0.3}
+	"dwarf": {path: "./statics/images/dwarf.png", scale: 0.5},
+	"fork": {path: "./statics/images/fork.png", scale: 0.7}
 };
 
 exports.get_image = function(id) {
 	var obj = sprites[id];
-	if(!obj) 
+	if(!obj) {
 		throw Error("No sprite for id: " + id);
+	}
 	var img = gamejs.image.load(obj.path), sizes = img.getSize();
 	return sprites[id].scale !== undefined ? 
 		transform.scale(img, [sizes[0]*obj.scale, sizes[1]*obj.scale]) : img;

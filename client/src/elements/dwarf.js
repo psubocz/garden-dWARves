@@ -9,10 +9,10 @@ var gamejs = require("gamejs"),
 /**
  * @param elements - Castle pieces. 
  */
-var Dwarf = exports.Dwarf = function Castle(director, health, id) {
+var Dwarf = exports.Dwarf = function Dwarf(director, health, id) {
 	Dwarf.superConstructor.apply(this, arguments);
 	this.id = id || "dwarf";
-	this.image = game_world.get_image(id);
+	this.image = game_world.get_image(this.id);
 	this.max_health = this.health = health;
 	this.director = director;
 };
@@ -20,16 +20,12 @@ var Dwarf = exports.Dwarf = function Castle(director, health, id) {
 gamejs.utils.objects.extend(Dwarf, sprite.Sprite);
 
 Dwarf.prototype.draw = function(canvas) {
-	Sprite.prototype.draw.apply(this, arguments);
-	gamejs.draw.rect(canvas, 
-		new gamejs.Rect(this.rect.left,
-						this.rect.top-20,
-						this.rect.width, 
-						20), "red");
-
-	gamejs.draw.rect(canvas, 
-			new gamejs.Rect(this.rect.left,
-							this.rect.top-20,
-							this.rect.width * (this.healt/this.max_health), 
-							20), "green")
+	gamejs.sprite.Sprite.prototype.draw.apply(this, arguments);
+	gamejs.draw.rect(canvas, "red", 
+		new gamejs.Rect(this.rect.left-0.5,
+						this.rect.top+this.rect.height+2, this.rect.width, 6));
+	gamejs.draw.rect(canvas, "green", 
+			new gamejs.Rect(this.rect.left-0.5,
+							this.rect.top+this.rect.height+2, 
+							this.rect.width*(this.health/this.max_health), 6.5));
 };
