@@ -17,18 +17,14 @@ body {
 	margin: 35px;
 	position: relative;
 	overflow: hidden;
-	min-width: 800px;
+	width: 1024px;
 	min-height: 600px;
-	width: 800px;
-	
 }
 
 #gjs-canvas {
 	display: block;
 	position: absolute;
 	background-color: black;
-	width: 800px;
-	height: 600px;
 }
 
 button#start {

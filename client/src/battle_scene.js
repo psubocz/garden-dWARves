@@ -1,5 +1,6 @@
 var gamejs = require("gamejs"), 
 	matrix = require("gamejs/utils/matrix"),
+	vector = require("gamejs/utils/vectors"),
 	world = require("world"),
 	font = require("gamejs/font"),
 	Castle = require("elements/castle").Castle;
@@ -17,6 +18,7 @@ var BattleScene = exports.BattleScene = function(director, playerA, playerB) {
 	this._font = new font.Font('48px sans');
 
 	this.scrolling = false;
+	this.forking = false;
 	this._locked = false;
 
 	this._boundingbox = new gamejs.Rect(0, 0, this.width, this.height);
@@ -35,9 +37,13 @@ var BattleScene = exports.BattleScene = function(director, playerA, playerB) {
 	
 	this.playerA = playerA;
 	this.playerB = playerB;
+
+	this.castleA = new Castle(director, playerA.name, new gamejs.Rect(80, 230, 400, 300), false);
+	this.add(this.castleA);
+	this.castleB = new Castle(director, playerB.name, new gamejs.Rect(1120, 230, 400, 300), true)
+	this.add(this.castleB);
 	
-	this.add(new Castle(director, playerA.name, new gamejs.Rect(150, 270, 250, 300)));
-	this.add(new Castle(director, playerB.name, new gamejs.Rect(1150, 270, 250, 300)));
+	this.fork = this.castleA.fork;
 };
 
 BattleScene.prototype.drawBackground = function() {
@@ -77,25 +83,34 @@ BattleScene.prototype.handleEvent = function handleEvent(event) {
 		return;
 	switch(event.type) {
 		case gamejs.event.MOUSE_DOWN:
+			var vpos = vector.add(this._viewport.topleft, event.pos);
+			var bit = this.fork.rect.collidePoint(vpos);
+			if(bit) {
+				this.fork.start_sling(event);
+				this.forking = true;
+				break;
+			}
 			this.scrolling = true;
 			break;
 		case gamejs.event.MOUSE_UP:
+			if(this.forking) {
+				this.fork.stop_sling(event);
+				this.forking = false;
+				break;
+			}
 			this.scrolling = false;
 			break;
 		case gamejs.event.MOUSE_MOTION:
-			if(!this.scrolling)
+			if(this.forking) {
+				console.log(event);
+				this.fork.sling_moved(event);
 				break;
+			}
+			if(!this.scrolling) {
+				break;
+			}
 			this.scrollNowBy(event.rel[0], event.rel[1]);
 			break;
-// case gamejs.event.MOUSE_WHEEL:
-// var new_zoom = this.zoom * (1 - event.delta/100);
-// this.zoom = Math.max(this.min_zoom, Math.min(this.max_zoom, new_zoom));
-// this._zoomedport = scaleRect(this._viewport,
-// this._boundingbox,
-// new gamejs.Rect(0, 0, this.director.width, this.director.height),
-// this.zoom
-// );
-// break;
 	}
 };
 

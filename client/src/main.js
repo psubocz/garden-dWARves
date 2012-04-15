@@ -21,6 +21,16 @@ gamejs.Surface.prototype.raw_blit = function(src, sx, sy, sw, sh, dx, dy, dw,
 	this.context.restore();
 };
 
+gamejs.sprite.Sprite.prototype.layout = function(bbox, left, bottom) {
+	var sizes = this.image.getSize();
+	this.rect = new gamejs.Rect(
+		bbox.left + left - sizes[0]/2,
+		bbox.top + bbox.height - bottom - sizes[1],
+		sizes[0], sizes[1]
+	);
+	console.log(this.rect);
+};
+
 gamejs.ready(function() {
 
 	function Director(width, height) {
@@ -70,7 +80,7 @@ gamejs.ready(function() {
 		return this.activeScene;
 	};
 
-	var director = new Director(800, 600);
+	var director = new Director(1024, 600);
 	director.start(new SplashScene(director));
 	
 	document.getElementById("start").onclick = function() {
