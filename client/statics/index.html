@@ -10,20 +10,31 @@
         <script type="text/javascript" src="/statics/bootstrap.min.js"></script>
         <script type="text/javascript" src="/statics/yabble.js"></script>
         <script type="text/javascript" src="/statics/gamejs.min.js"></script>
-        <script type="text/javascript" src="/statics/socket.io.min.js"></script>
-        
-        <script type="text/javascript">
+		<script type="text/javascript" src="/statics/socket.io.min.js"></script>
+		<script type="text/javascript">
+			var socket = io.connect('http://garden-dwarves.netwind.pl');
+		</script>
+		<script type="text/javascript">
             require.setModuleRoot('./src/');
             require.run('main');
     	</script>
 	</head>
 	<body>
-		<!--  <div class="row">
-		<div class="span1" id="chatbox">Chatbox</div>  -->
-		<div  id="container">
-            <canvas id="gjs-canvas"></canvas>
-            <button type="button" id="start">Start!</button>
-        </div>
+		<div class="row">
+			<div class="span3" id="chatbox">Chatbox</div>
+			<div class="span9" id="container">
+				<canvas id="gjs-canvas"></canvas>
+				
+				<div id="login-screen">
+					<label id="player_name_label" for="player_name">Your name:</label>
+					<input id="player_name" type="text" />
+					<button type="button" id="start">Start!</button>
+				</div>
+				<div id="loader">
+					<img src="./statics/images/loader.gif" />
+					<span id="load_msg"></span>
+				</div>
+			</div>
 		<!--  </div> -->
 	</body>
 </html>

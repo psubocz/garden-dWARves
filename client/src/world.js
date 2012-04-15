@@ -5,9 +5,7 @@ var sprites = exports.OBJECT_SPRITES = {
 		path: "./statics/images/cannonball.png",
 		scale: 0.35
 	},
-	"cloud_1": {
-		path: "./statics/images/cloud_1.png",
-	},
+	"cloud_1": {path: "./statics/images/cloud_1.png"},
 	"cloud_2": {path: "./statics/images/cloud_2.png"},
 	"cloud_3": {path: "./statics/images/cloud_3.png"},
 	"cloud_4": {path: "./statics/images/cloud_4.png"},

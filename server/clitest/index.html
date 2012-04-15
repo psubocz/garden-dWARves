@@ -1,8 +1,9 @@
 <html>
 <head>
-<script src="/statics/socket.io.min.js"></script>
+<script src="http://garden-dwarves.netwind.pl/statics/socket.io.min.js"></script>
 <script>
-  var socket = io.connect('http://127.0.0.1:8000');
+  var socket = io.connect('http://garden-dwarves.netwind.pl');
+  
   function do_connect(nick) {
   	socket.emit('connect', {'nick': nick});
   }
@@ -25,7 +26,6 @@
   socket.on('chat', function(udata, txt) {
 	console.log(udata['nick']+':'+txt);
   });
-
 </script>
 </head>
 

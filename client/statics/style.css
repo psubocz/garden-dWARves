@@ -19,6 +19,7 @@ body {
 	overflow: hidden;
 	width: 1024px;
 	min-height: 600px;
+	width: 800px;
 }
 
 #gjs-canvas {
@@ -28,25 +29,78 @@ body {
 }
 
 button#start {
-	font-family: serif;
-	font-variant: small-caps;
-	position: absolute;
-	z-index: 10;
-	top: 45%;
-	left: 50%;
-	width: 200px;
-	height: 64px;
-	font-size: 48px;
-	margin-left: -100px;
-	background: rgb(105, 166, 199);
-	border: 1px solid black;
-	color: white;
-	border-radius: 6px;
-	box-shadow: 3px 3px 5px black;
-	
+    background: none repeat scroll 0 0 #69A6C7;
+    border: 1px solid black;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    color: white;
+    font-family: serif;
+    font-size: 48px;
+    font-variant: small-caps;
+    height: 64px;
+    margin-left: -100px;
+    position: absolute;
+    top: 72px;
+    width: 200px;
+    z-index: 10;
 }
-
 button#start:hover {
 	background-color: rgb(129, 168, 34);
 }
-	
+
+input#player_name {
+    border-radius: 5px 5px 5px 5px;
+    font-size: 1.2em;
+    height: 26px;
+    left: 242px;
+    margin-left: -100px;
+    padding: 3px 5px;
+    position: absolute;
+    top: 18px;
+    width: 220px;
+    z-index: 100;
+}
+
+label#player_name_label {
+    color: #333333;
+    font-size: 1.6em;
+    left: 25px;
+    position: absolute;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    top: 26px;
+    z-index: 10;
+}
+
+#login-screen {
+    background: none repeat scroll 0 0 #F9F9F9;
+    border: 1px solid #999999;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    height: 160px;
+    left: 50%;
+    margin-left: -200px;
+    position: absolute;
+    top: 240px;
+    width: 400px;
+}
+
+#loader {
+    background: none repeat scroll 0 0 #F9F9F9;
+    border: 1px solid #999999;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    left: 32%;
+    padding: 20px;
+    position: absolute;
+    top: 280px;
+    width: 240px;
+    z-index: 20;
+	display: none;
+}
+
+#loader span {
+    color: #333333;
+    display: inline-block;
+    font-size: 1.4em;
+    margin-top: 17px;
+}

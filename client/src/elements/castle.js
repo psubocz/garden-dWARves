@@ -25,7 +25,7 @@ var Castle = exports.Castle = function Castle(director, name, bbox, flip, elemen
 	this.add(dwarf);
 	
 	var fork = this.fork = new Fork(director, flip);
-	fork.layout(this.rect, this.flipX(100), -20);
+	fork.layout(this.rect, this.flipX(50), -20);
 	this.add(fork);
 };
 
