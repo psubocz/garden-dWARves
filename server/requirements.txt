@@ -1,0 +1,8 @@
+# http://code.google.com/p/pybox2d/wiki/BuildingfromSource
+svn+http://pybox2d.googlecode.com/svn/trunk/
+bottle==0.10.9
+gevent==0.13.7
+git+http://github.com/abourget/gevent-socketio.git
+gevent-websocket==0.3.4
+greenlet==0.3.4
+wsgiref==0.1.2

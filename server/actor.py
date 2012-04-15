@@ -67,11 +67,14 @@ class Actor(object):
 	def on_actor_joined(self, actor, arena):
 		if actor == self:
 			self._arena = arena
+			self.emit('joined_arena', self.user_data())
 		else:
 			self.emit('opponent_joined', actor.user_data())
 
 	def on_arena_actors(self, actors):
 		for actor in actors:
+			if actor == self:
+				continue
 			self.emit('opponent_joined', actor.user_data())
 
 	def on_game_ready(self):

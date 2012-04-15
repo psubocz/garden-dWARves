@@ -17,7 +17,7 @@ body {
 	margin: 35px;
 	position: relative;
 	overflow: hidden;
-	min-width: 800px;
+	width: 1024px;
 	min-height: 600px;
 	width: 800px;
 }
@@ -26,8 +26,6 @@ body {
 	display: block;
 	position: absolute;
 	background-color: black;
-	width: 800px;
-	height: 600px;
 }
 
 button#start {
@@ -106,4 +104,3 @@ label#player_name_label {
     font-size: 1.4em;
     margin-top: 17px;
 }
-
