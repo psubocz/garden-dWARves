@@ -33,6 +33,13 @@ class Arena(object):
 			return
 
 		# physics!
+		if actor == self._actors[0]:
+			actorid = 0
+		else:
+			actorid = 1
+
+		self._real_arena.shot(actorid, force, angle)
+
 		self._update_physics()
 		self._change_turn()
 
@@ -40,7 +47,7 @@ class Arena(object):
 		result = []
 		time = 0
 		i = 0
-		while True:
+		for l in xrange(3600):
 			r = self._real_arena.tick()
 			if r == []:
 				break
