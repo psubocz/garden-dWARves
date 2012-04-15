@@ -24,10 +24,10 @@ class Arena(object):
 		self._send_all('chat', (actor, txt))
 
 	def _send(self, actor, event, args=()):
-		gevent.spawn(actor.inbox.put, (event, args))
+		actor.inbox.put((event, args))
 
 	def _sendbyid(self, actorid, event, args=()):
-		gevent.spawn(self._actors[actorid].inbox.put, (event, args))
+		self._actors[actorid].inbox.put((event, args))
 
 	def _send_all(self, event, args=()):
 		for actor in self._actors:
