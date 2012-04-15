@@ -19,7 +19,6 @@ body {
 	overflow: hidden;
 	width: 1024px;
 	min-height: 600px;
-	width: 800px;
 }
 
 #gjs-canvas {

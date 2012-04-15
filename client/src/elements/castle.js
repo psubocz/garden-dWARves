@@ -21,11 +21,11 @@ var Castle = exports.Castle = function Castle(director, name, bbox, flip, elemen
 	this._flipped = !!flip;
 
 	var dwarf = new Dwarf(director, 100);
-	dwarf.layout(this.rect, this.flipX(200), 0);
+	dwarf.layout(this.rect, this.flipX(250), 0);
 	this.add(dwarf);
 	
 	var fork = this.fork = new Fork(director, flip);
-	fork.layout(this.rect, this.flipX(50), -20);
+	fork.layout(this.rect, this.flipX(120), -20);
 	this.add(fork);
 };
 

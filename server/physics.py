@@ -11,13 +11,13 @@ class RealArena(object):
 
 		groundBody = self._world.CreateStaticBody( position=(0,0), shapes=b2PolygonShape(box=(100, 0.36)))
 
-		self._put_object(1, 1, 3.0, 0.86)
-		self._put_object(2, 1, 4.0, 0.86)
-		self._put_object(3, 2, 3.5, 1.41)
+		self._put_object(1, 1, 5.0, 1.5)
+		self._put_object(2, 1, 8.0, 1.5)
+		self._put_object(3, 2, 5.0, 5)
 
-		self._put_object(4, 1, 45.0, 0.86)
-		self._put_object(5, 1, 46.0, 0.86)
-		self._put_object(6, 2, 45.5, 1.41)
+		self._put_object(4, 1, 41.0, 1.5)
+		self._put_object(5, 1, 44.0, 1.5)
+		self._put_object(6, 2, 41.0, 5)
 
 		self._timeStep = 1.0 / 60
 		self._vel_iters = 10
@@ -28,9 +28,9 @@ class RealArena(object):
 		body = self._world.CreateDynamicBody(position=(x,y), userData=(obid, obtype, 1))
 
 		if obtype == 1:
-			body.CreatePolygonFixture(box=(0.11,1.0), density=1, friction=0.3)
+			body.CreatePolygonFixture(box=(0.5,3.5), density=1, friction=0.3)
 		elif obtype == 2:
-			body.CreatePolygonFixture(box=(1,0.11), density=1, friction=0.3)
+			body.CreatePolygonFixture(box=(3.5,0.5), density=1, friction=0.3)
 		
 
 	def tick(self):

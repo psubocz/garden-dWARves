@@ -8,7 +8,7 @@ var gamejs = require("gamejs"),
 
 var BattleScene = exports.BattleScene = function(director, playerA, playerB) {
 	this.director = director;
-	this.width = 1600;
+	this.width = 1800;
 	this.height = this.director.height;
 	
 	this._font = new font.Font('48px sans');
@@ -36,9 +36,9 @@ var BattleScene = exports.BattleScene = function(director, playerA, playerB) {
 	
 	this.active_player = null;
 
-	this.castleA = new Castle(director, playerA.name, new gamejs.Rect(80, 230, 400, 300), false);
+	this.castleA = new Castle(director, playerA.name, new gamejs.Rect(0, 230, 400, 300), false);
 	this.add(this.castleA);
-	this.castleB = new Castle(director, playerB.name, new gamejs.Rect(1120, 230, 400, 300), true)
+	this.castleB = new Castle(director, playerB.name, new gamejs.Rect(1400, 230, 400, 300), true)
 	this.add(this.castleB);
 	
 	this.fork = this.castleA.fork;

@@ -138,6 +138,30 @@ gamejs.ready(function() {
 		battle_scene.setActivePlayer(udata.mine);
 	});
 	
+	
+	
+	socket.on('arena_layout', function(udata) {
+		var item;
+		var ppm = 36;
+		
+		for(var i=0; i < udata.length; i++) {
+			item = udata[i];
+			battle_scene.add(
+				new TracedSprite(
+					item.id, 
+					"wood",
+					[{
+						stamp: 0, 
+						rotation: item.angle,
+						x: item.x * ppm,
+						y: director.height - item.y * ppm
+					}], 
+					item.type
+				)
+			);
+		}
+	});
+	
 	/*
 	document.getElementById("start").onclick = function() {
 		this.style.display = "none";
