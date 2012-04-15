@@ -2,6 +2,8 @@ var gamejs = require('gamejs'), matrix = require('gamejs/utils/matrix'), world =
 
 var player1Name = '';
 var player2Name = '';
+var isChatVisible = false;
+var isGameOn = false;
 
 var object_sprites = [];
 for ( var k in world.OBJECT_SPRITES) {
@@ -10,8 +12,7 @@ for ( var k in world.OBJECT_SPRITES) {
 
 gamejs.preload(object_sprites.concat(['./statics/images/startScreen.png']));
 
-gamejs.Surface.prototype.raw_blit = function(src, sx, sy, sw, sh, dx, dy, dw,
-		dh) {
+gamejs.Surface.prototype.raw_blit = function(src, sx, sy, sw, sh, dx, dy, dw, dh) {
 	this.context.save();
 	this.context.globalCompositeOperation = "source-over";
 	// first translate, then rotate
@@ -88,7 +89,11 @@ gamejs.ready(function() {
 
 	var director = new Director(1024, 600);
 	director.start(new SplashScene(director));
-
+	
+	// focus on name entry
+	$("#player_name").focus();
+	
+	// handle start button
 	$("#start").click(function(event) {
 		var playerName = $("#player_name").val();
 		
@@ -106,6 +111,54 @@ gamejs.ready(function() {
 			
 			socket.emit('connect', {'nick': playerName});
 		}
+	});
+	
+	// check if chat triggered
+	$(document).keypress(function(event){
+		if(isGameOn) {
+			var keycode = (event.keyCode ? event.keyCode : event.which);
+			
+			var txt = $("#msgInput").val();
+			
+			// if pressed 't' key
+			if(keycode == '116') {
+				if(!isChatVisible) {
+					$("#chatbox").show();
+					$("#msgInput").val("");
+					$("#msgInputDiv > span").html("# " + player1Name + ": ");
+					$("#msgInput").focus();
+					isChatVisible = true;
+				} else if (txt.length == 0) {
+					$("#chatbox").hide();
+					$("#msgInput").val("");
+					isChatVisible = false;
+				}
+			}
+		}
+	});
+	
+	// send message to the opponent
+	$('#msgInput').keypress(function(e){
+		if(e.which == 13 && isChatVisible) {
+			var txt = $("#msgInput").val();
+			if(txt.length > 0) {
+				socket.emit('say', txt);
+				$("#msgInput").val("");
+				$("#chatbox").hide();
+				isChatVisible = false;
+			}
+		}
+	});
+	
+	// receive message from opponent
+	socket.on('chat', function(udata, txt) {
+		$("#chatbox").show();
+		$("#msgInput").val("");
+		$("#msgInputDiv > span").html("# " + player1Name + ": ");
+		$("#msgInput").focus();
+		$("#prevMessage").html("# " + udata['nick'] + ":  " + txt);
+		isChatVisible = true;
+		console.log(udata['nick']+':'+txt);
 	});
 	
 	socket.on('connected', function () {
@@ -132,6 +185,7 @@ gamejs.ready(function() {
 		// display battle scene
 		battle_scene = new BattleScene(director, {name: player1Name}, {name: player2Name});
 		director.start(battle_scene);
+		isGameOn = true;
 	});
 	
 	socket.on('turn_change', function(udata) {

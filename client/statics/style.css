@@ -11,14 +11,48 @@ body {
 	max-height: 80px;
 }
 
+#game-container {
+    position: relative;
+    width: 100%;
+}
+
+#chatbox {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #DEDEDE;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    color: #333333;
+    display: none;
+    height: 42px;
+    left: 50%;
+    margin-left: -400px;
+    padding: 10px 20px;
+    position: absolute;
+    text-align: left;
+    top: 10px;
+    width: 800px;
+}
+#msgInputDiv {
+	margin-top: 3px;
+}
+#msgInput {
+    border: 0 none;
+    box-shadow: none;
+    margin: 0;
+    padding: 3px 0;
+    width: 600px;
+}
+
 #container {
-	border: 2px solid silver;
-	text-align: center;
-	margin: 35px;
-	position: relative;
-	overflow: hidden;
-	width: 1024px;
-	min-height: 600px;
+    border: 2px solid silver;
+    left: 50%;
+    margin-left: -512px;
+    min-height: 600px;
+    overflow: hidden;
+    position: absolute;
+    text-align: center;
+    top: 20px;
+    width: 1024px;
 }
 
 #gjs-canvas {

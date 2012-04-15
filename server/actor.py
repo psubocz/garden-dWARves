@@ -83,9 +83,15 @@ class Actor(object):
 	def on_arena_layout(self, layout):
 		self.emit('arena_layout', layout)
 
-	def on_start_game(self):
+	def on_turn_change(self, mine):
 		self._change_state(INGAME)
-		self.emit('game_started')
+		self.emit('turn_changed', mine)
+
+	def on_shot(self, force, angle):
+		gevent.spawn(self._arena.inbox.put, ('shot', (self, force, angle)))
+
+	def on_arena_update(self, data):
+		self.emit('arena_update', data)
 
 	def on_say(self, txt):
 		if self._arena == None:
