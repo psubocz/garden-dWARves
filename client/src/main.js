@@ -223,13 +223,14 @@ gamejs.ready(function() {
 	});
 
 	socket.on('arena_update', function(udata) {
+		console.log(udata);
 		var traces = {};
 		var i, j, batch, trace, obj;
 
 		function add_trace(stamp, data) {
 			var l = traces[data.id] || [];
 			if(!(data.id in TracedSprite._objects)) {
-				create_trace_object(data);
+				battle_scene.add(create_trace_object(data));
 			}
 			l.push({stamp: stamp, rotation: data.angle * 180 / Math.PI,
 				x: data.x * PPM, y: director.height - data.y * PPM});
