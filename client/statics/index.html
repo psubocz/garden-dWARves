@@ -20,10 +20,14 @@
     	</script>
 	</head>
 	<body>
-		<div class="row">
-			<div class="span3" id="chatbox">Chatbox</div>
-			<div class="span9" id="container">
+		<div id="game-container">
+			<div id="container">
 				<canvas id="gjs-canvas"></canvas>
+				
+				<div id="chatbox">
+					<div id="prevMessage"></div>
+					<div id="msgInputDiv"><span></span><input type="text" id="msgInput"></div>
+				</div>
 				
 				<div id="login-screen">
 					<label id="player_name_label" for="player_name">Your name:</label>
@@ -35,6 +39,6 @@
 					<span id="load_msg"></span>
 				</div>
 			</div>
-		<!--  </div> -->
+		</div>
 	</body>
 </html>
