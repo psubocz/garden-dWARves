@@ -82,6 +82,10 @@ gamejs.ready(function() {
 	Director.prototype.getScene = function() {
 		return this.activeScene;
 	};
+	
+	Director.prototype.send_shot = function(power) {
+		socket.emit("shot", {"power": power, "angle": 45});
+	};
 
 	var director = new Director(1024, 600);
 	director.start(new SplashScene(director));
@@ -103,7 +107,7 @@ gamejs.ready(function() {
 			
 			// display loader
 			$("#loader").show();
-			$("#load_msg").html('...');
+			$("#load_msg").html('Connecting ...');
 			
 			socket.emit('connect', {'nick': playerName});
 		}
@@ -162,7 +166,7 @@ gamejs.ready(function() {
 		$("#load_msg").html('Waiting for opponent...');
 		console.log('connected');
 	});
-	
+
 	socket.on('joined_arena', function(udata) {
 		player1Name = udata['nick'];
 		console.log('i joined: ' + udata['nick']);
@@ -182,6 +186,34 @@ gamejs.ready(function() {
 		battle_scene = new BattleScene(director, {name: player1Name}, {name: player2Name});
 		director.start(battle_scene);
 		isGameOn = true;
+	});
+	
+	socket.on('turn_change', function(udata) {
+		battle_scene.setActivePlayer(udata.mine);
+	});
+	
+	
+	
+	socket.on('arena_layout', function(udata) {
+		var item;
+		var ppm = 36;
+		
+		for(var i=0; i < udata.length; i++) {
+			item = udata[i];
+			battle_scene.add(
+				new TracedSprite(
+					item.id, 
+					"wood",
+					[{
+						stamp: 0, 
+						rotation: item.angle,
+						x: item.x * ppm,
+						y: director.height - item.y * ppm
+					}], 
+					item.type
+				)
+			);
+		}
 	});
 	
 	/*

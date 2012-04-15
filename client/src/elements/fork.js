@@ -47,6 +47,7 @@ Fork.prototype.start_sling = function(event) {
 };
 
 Fork.prototype.stop_sling = function(event) {
+	this.director.send_shot(Math.abs(5 * this.angle / Math.PI));
 	this.angle = 0;
 };
 

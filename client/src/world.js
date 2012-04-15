@@ -14,7 +14,6 @@ var sprites = exports.OBJECT_SPRITES = {
 	"grass": {path: "./statics/images/grass.png"},
 	"ground-left": {path: "./statics/images/ground-left.png"},
 	"ground-right": {path: "./statics/images/ground-right.png"},
-	"ground-right": {path: "./statics/images/ground-right.png"},
 	"rock": {path: "./statics/images/rock.png"},
 	"metal": {path: "./statics/images/metal.png"},
 	"wood": {path: "./statics/images/wood.png"},

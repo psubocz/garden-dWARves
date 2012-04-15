@@ -1,4 +1,4 @@
 
 SOCKETIO_PORT = 8080
 SOCKETIO_IFACE = '0.0.0.0'
-SOCKETIO_CORS = "http://localhost:%d" % SOCKETIO_PORT
+SOCKETIO_CORS = "http://localhost:8000"
