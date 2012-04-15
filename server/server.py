@@ -26,5 +26,16 @@ def handle_index():
 	return static_file('index.html', root='clitest')
 	
 print "Starting socket.io server at %s:%d" % (config.SOCKETIO_IFACE, config.SOCKETIO_PORT)
-SocketIOServer((config.SOCKETIO_IFACE, config.SOCKETIO_PORT), bottle.default_app(), namespace="socket.io").serve_forever()
+server = SocketIOServer((config.SOCKETIO_IFACE, config.SOCKETIO_PORT), bottle.default_app(), namespace="socket.io")
+
+def patched_write_plain_result(self, data):
+	self.start_response("200 OK", [
+		("Content-Type", "text/plain"),
+		("Access-Control-Allow-Origin", config.SOCKETIO_CORS),
+		("Access-Control-Allow-Credentials", "true"),
+	])
+	self.result = [data]
+
+server.handler_class.write_plain_result = patched_write_plain_result
+server.serve_forever()
 

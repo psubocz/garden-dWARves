@@ -31,7 +31,6 @@ gamejs.sprite.Sprite.prototype.layout = function(bbox, left, bottom) {
 		bbox.top + bbox.height - bottom - sizes[1],
 		sizes[0], sizes[1]
 	);
-	console.log(this.rect);
 };
 
 gamejs.ready(function() {
