@@ -45,7 +45,7 @@ class RealArena(object):
 				new_sleeping.append(body.userData)
 			if not body.awake and body.userData in self._last_sleeping:
 				continue
-			result.append((body.userData, body.position.x, body.position.y, body.angle))
+			result.append({'id': body.userData[0], 'type': body.userData[1], 'x': body.position.x, 'y': body.position.y, 'angle': body.angle})
 
 		self._last_sleeping = new_sleeping
 		return result
