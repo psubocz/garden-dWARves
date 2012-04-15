@@ -12,7 +12,8 @@
         <script type="text/javascript" src="/statics/gamejs.min.js"></script>
 		<script type="text/javascript" src="/statics/socket.io.min.js"></script>
 		<script type="text/javascript">
-			var socket = io.connect('http://garden-dwarves.netwind.pl');
+			var addr = localStorage.getItem("_host") || 'http://garden-dwarves.netwind.pl';
+			var socket = io.connect(addr);
 		</script>
 		<script type="text/javascript">
             require.setModuleRoot('./src/');
@@ -35,6 +36,6 @@
 					<span id="load_msg"></span>
 				</div>
 			</div>
-		<!--  </div> -->
+		</div>
 	</body>
 </html>
