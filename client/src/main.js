@@ -1,5 +1,8 @@
 var gamejs = require('gamejs'), matrix = require('gamejs/utils/matrix'), world = require('world'), SplashScene = require("splash_scene").SplashScene, BattleScene = require("battle_scene").BattleScene, TracedSprite = require("traced_sprite").TracedSprite;
 
+var player1Name = '';
+var player2Name = '';
+
 var object_sprites = [];
 for ( var k in world.OBJECT_SPRITES) {
 	object_sprites.push(world.OBJECT_SPRITES[k].path);
@@ -72,13 +75,61 @@ gamejs.ready(function() {
 
 	var director = new Director(800, 600);
 	director.start(new SplashScene(director));
+
+	$("#start").click(function(event) {
+		var playerName = $("#player_name").val();
+		
+		if(playerName.length < 1) {
+			alert('Please enter your name');
+		} else {
+			player1Name = playerName;
+			
+			// hide player name entry fields
+			$("#login-screen").hide();
+			
+			// display loader
+			$("#loader").show();
+			$("#load_msg").html('...');
+			
+			socket.emit('connect', {'nick': playerName});
+		}
+	});
 	
+	socket.on('connected', function () {
+		socket.emit('search_for_opponent', {});
+		$("#load_msg").html('Waiting for opponent...');
+		console.log('connected');
+	});
+	
+	socket.on('joined_arena', function(udata) {
+		player1Name = udata['nick'];
+		console.log('i joined: ' + udata['nick']);
+	});
+	
+	socket.on('opponent_joined', function(udata) {
+		player2Name = udata['nick'];
+		console.log('opponent joined: ' + udata['nick']);
+	});
+	
+	socket.on('game_ready', function() {
+		console.log('game ready');
+		
+		$("#loader").hide();
+		
+		// display battle scene
+		battle_scene = new BattleScene(director, {name: player1Name}, {name: player2Name});
+		director.start(battle_scene);
+	});
+	
+	/*
 	document.getElementById("start").onclick = function() {
 		this.style.display = "none";
 		battle_scene = new BattleScene(director, {name: "Zuber"}, {name: "Ślimak"});
 		director.start(battle_scene);
 	};
-/*	
+	*/
+
+	/*	
 	document.getElementById("btnA").onclick = function() {
 		battle_scene.scrollTo(300, 450);
 	};
@@ -99,5 +150,7 @@ gamejs.ready(function() {
 			});
 		}
 		battle_scene.add(new TracedSprite("cannonball", trace));
-	}; */
+	};
+	*/
+	
 });
