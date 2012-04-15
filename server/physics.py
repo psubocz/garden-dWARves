@@ -43,12 +43,13 @@ class RealArena(object):
 	def shot(self, actorid, force, angle):
 		if actorid == 0:
 			x = 3.5
-			f = 1 * force
+			f = 10 * force
 		else:
 			x = 46.5
-			f = -1 * force
+			f = -10 * force
 
 		body = self._put_object(3, x, 8.5)
+		print "applying force: ", f
 		body.ApplyForce((f,0), (0,0))
 
 	def tick(self):

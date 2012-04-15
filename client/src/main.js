@@ -162,27 +162,27 @@ gamejs.ready(function() {
 		$("#msgInput").focus();
 		$("#prevMessage").html("# " + udata['nick'] + ":  " + txt);
 		isChatVisible = true;
-		console.log(udata['nick']+':'+txt);
+		//console.log(udata['nick']+':'+txt);
 	});
 	
 	socket.on('connected', function () {
 		socket.emit('search_for_opponent', {});
 		$("#load_msg").html('Waiting for opponent...');
-		console.log('connected');
+		//console.log('connected');
 	});
 
 	socket.on('joined_arena', function(udata) {
 		player1Name = udata['nick'];
-		console.log('i joined: ' + udata['nick']);
+		//console.log('i joined: ' + udata['nick']);
 	});
 	
 	socket.on('opponent_joined', function(udata) {
 		player2Name = udata['nick'];
-		console.log('opponent joined: ' + udata['nick']);
+		//console.log('opponent joined: ' + udata['nick']);
 	});
 	
 	socket.on('game_ready', function() {
-		console.log('game ready');
+		//console.log('game ready');
 		
 		$("#loader").hide();
 		
@@ -223,7 +223,7 @@ gamejs.ready(function() {
 	});
 
 	socket.on('arena_update', function(udata) {
-		console.log(udata);
+		//console.log(udata);
 		var traces = {};
 		var i, j, batch, trace, obj;
 

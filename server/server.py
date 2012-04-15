@@ -22,8 +22,8 @@ def handle_src(path):
 
 @route('/')
 def handle_index():
-	#return static_file('index.html', root='../client/statics')
-	return static_file('index.html', root='clitest')
+	return static_file('index.html', root='../client/statics')
+	#return static_file('index.html', root='clitest')
 	
 print "Starting socket.io server at %s:%d" % (config.SOCKETIO_IFACE, config.SOCKETIO_PORT)
 server = SocketIOServer((config.SOCKETIO_IFACE, config.SOCKETIO_PORT), bottle.default_app(), namespace="socket.io")

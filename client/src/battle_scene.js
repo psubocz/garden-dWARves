@@ -100,7 +100,7 @@ BattleScene.prototype.handleEvent = function handleEvent(event) {
 			break;
 		case gamejs.event.MOUSE_MOTION:
 			if(this.forking) {
-				console.log(event);
+				//console.log(event);
 				this.fork.sling_moved(event);
 				break;
 			}

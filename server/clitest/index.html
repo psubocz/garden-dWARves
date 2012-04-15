@@ -1,14 +1,17 @@
 <html>
 <head>
-<script src="http://garden-dwarves.netwind.pl/statics/socket.io.min.js"></script>
+<script src="http://127.0.0.1:8080/statics/socket.io.min.js"></script>
 <script>
-  var socket = io.connect('http://garden-dwarves.netwind.pl');
+  var socket = io.connect('http://127.0.0.1:8080');
   
   function do_connect(nick) {
   	socket.emit('connect', {'nick': nick});
   }
   function say(txt) {
     socket.emit('say', txt);
+  }
+  function shot() {
+	socket.emit('shot', 1, 0);
   }
   socket.on('connected', function () {
 	console.log('connected to server');
@@ -25,6 +28,16 @@
   });
   socket.on('chat', function(udata, txt) {
 	console.log(udata['nick']+':'+txt);
+  });
+  socket.on('arena_layout', function(data) {
+	console.log(data);
+  });
+  socket.on('arena_update', function(data) {
+	console.log(data);
+  });
+  socket.on('turn_changed', function(mine) {
+    if (mine) console.log('my turn');
+	else console.log('opponents turn');
   });
 </script>
 </head>
